@@ -8,8 +8,39 @@ export function getNameInitials(name) {
   return splitName[0][0];
 }
 
+// convert json data into array
 export function transformToArrWithId(snapVal) {
   return snapVal
     ? Object.keys(snapVal).map(roomId => ({ ...snapVal[roomId], id: roomId }))
     : [];
+}
+
+export function getUserUpdates(userId, keyToUpdate, value, db) {
+  const updates = {};
+
+  updates[`/profiles/${userId}/${keyToUpdate}`] = value;
+
+  const getMsgs = db
+    .ref('/messages')
+    .orderByChild('author/uid')
+    .equalTo(userId)
+    .once('value');
+
+  const getRooms = db
+    .ref('/rooms')
+    .orderByChild('lastMessage/author/uid')
+    .eualTo(userId)
+    .once('value');
+
+  const [mSnap, rSnap] = Promise.all([getMsgs, getRooms]);
+
+  mSnap.forEach(msgSnap => {
+    updates[`/messages/${msgSnap.key}/author/${keyToUpdate}`] = value;
+  });
+
+  rSnap.forEach(roomSnap => {
+    updates[`/rooms/${roomSnap.key}/lastMessage/author/${keyToUpdate}`] = value;
+  });
+
+  return updates;
 }
