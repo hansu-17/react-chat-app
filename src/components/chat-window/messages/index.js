@@ -199,7 +199,7 @@ const Messages = () => {
 
   return (
     <ul ref={selfRef} className="msg-list custom-scroll">
-      {messages && message.length >= PAGE_SIZE && (
+      {messages && messages.length >= PAGE_SIZE && (
         <li className="text-center mb=2 mt-2">
           <Button onClick={onLoadMore} color="green">
             Load more
