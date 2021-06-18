@@ -2,14 +2,14 @@ import React, { memo } from 'react';
 import { Button } from 'rsuite';
 import TimeAgo from 'timeago-react';
 import { useCurrentRoom } from '../../../context/current-room.context';
-import { useMediaQuery } from '../../../misc/custom-hooks';
+import { useHover, useMediaQuery } from '../../../misc/custom-hooks';
 import { auth } from '../../../misc/firebase';
 import PresenceDot from '../../PresenceDot';
 import ProfileAvatar from '../../ProfileAvatar';
 import IconBtnControl from './IconBtnControl';
 import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 
-const MessageItem = ({ message, handleAdmin, handleLike }) => {
+const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
   const { author, createdAt, text, likes, likeCount } = message;
 
   const [selfRef, isHovered] = useHover();
@@ -66,6 +66,15 @@ const MessageItem = ({ message, handleAdmin, handleLike }) => {
           onClik={() => handleLike(message.id)}
           badgeContext={likeCount}
         />
+
+        {isAuthor && (
+          <IconBtnControl
+            isVisible={canShowIcons}
+            iconName="close"
+            tooltip="Delete this message"
+            onClik={() => handleDelete(message.id)}
+          />
+        )}
       </div>
 
       <div>
