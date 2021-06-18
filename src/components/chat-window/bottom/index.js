@@ -20,7 +20,7 @@ function assembeMessage(profile, chatId) {
 
 const Bottom = () => {
   const [input, setInput] = useState('');
-  const { isLoading, setIsLoading } = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { chatId } = useParams();
   const { profile } = useProfile();

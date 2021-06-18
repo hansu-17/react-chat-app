@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import { Alert, Icon, Input, InputGroup } from 'rsuite';
-import InputGroupButton from 'rsuite/lib/InputGroup/InputGroupButton';
 
 const EditableInput = ({
   initialValue,
@@ -8,6 +7,7 @@ const EditableInput = ({
   label = null,
   placeholder = 'Write your value',
   emptyMsg = 'Input is Empty',
+  wrapperClassName = '',
   ...inputProps
 }) => {
   const [input, setInput] = useState(initialValue);
@@ -37,7 +37,7 @@ const EditableInput = ({
   };
 
   return (
-    <div>
+    <div className={wrapperClassName}>
       {label}
       <InputGroup>
         <Input
