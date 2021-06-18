@@ -5,16 +5,17 @@ import { useCurrentRoom } from '../../../context/current-room.context';
 import { auth } from '../../../misc/firebase';
 import PresenceDot from '../../PresenceDot';
 import ProfileAvatar from '../../ProfileAvatar';
+import IconBtnControl from './IconBtnControl';
 import ProfileInfoBtnModal from './ProfileInfoBtnModal';
 
-const MessageItem = ({ message }) => {
+const MessageItem = ({ message, handleAdmin }) => {
   const { author, createdAt, text } = message;
 
   const isAdmin = useCurrentRoom(v => v.isAdmin);
   const admins = useCurrentRoom(v => v.admins);
 
   const isMsgAuthorAdmin = admins.includes(author.uid);
-  const isAuthor = auth.currentUser.uid == author.uid;
+  const isAuthor = auth.currentUser.uid === author.uid;
   const canGrantAdmin = isAdmin && !isAuthor;
 
   return (
@@ -45,6 +46,15 @@ const MessageItem = ({ message }) => {
         <TimeAgo
           datetime={createdAt}
           className="fontnormal text-black-45 ml-2"
+        />
+
+        <IconBtnControl
+          {...Button(true ? { colr: 'red' } : {})}
+          isVisible
+          iconName="heart"
+          tooltip="Like this message"
+          onClik={() => {}}
+          badgeContext={5}
         />
       </div>
 
