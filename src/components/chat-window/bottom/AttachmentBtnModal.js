@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { Alert, Button, Icon, InputGroup, Modal, Uploader } from 'rsuite';
 import { useModalState } from '../../../misc/custom-hooks';
 import { storage } from '../../../misc/firebase';
@@ -34,13 +34,11 @@ const AttachmentBtnModal = ({ afterUpload }) => {
 
       const uploadSnapshot = await Promise.all(uploadPromises);
 
-      const shapePromises = uploadPromises.map(async snap => {
-        return {
-          contentType: (await snap).metadata.contentType,
-          name: (await snap).metadata.name,
-          url: await (await snap).ref.getDownloadURL(),
-        };
-      });
+      const shapePromises = uploadSnapshot.map(async snap => ({
+        contentType: (await snap).metadata.contentType,
+        name: (await snap).metadata.name,
+        url: await (await snap).ref.getDownloadURL(),
+      }));
 
       const files = await Promise.all(shapePromises);
 
@@ -48,7 +46,7 @@ const AttachmentBtnModal = ({ afterUpload }) => {
 
       setIsLoading(false);
       close();
-    } catch (error) {
+    } catch (err) {
       setIsLoading(false);
       Alert.error(err.message, 4000);
     }
