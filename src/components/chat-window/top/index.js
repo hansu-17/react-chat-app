@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { ButtonToolbar, Icon } from 'rsuite';
 import { useCurrentRoom } from '../../../context/current-room.context';
 import { useMediaQuery } from '../../../misc/custom-hooks';
+import AskFcmBtnModal from './AskFcmBtnModal';
 import EditRoomBtnDrawer from './EditRoomBtnDrawer';
 import RoomIfoBtnModal from './RoomIfoBtnModal';
+import SendFcmBtnModal from './SendFcmBtnModal';
 
 const Top = () => {
   const name = useCurrentRoom(v => v.name);
@@ -12,7 +14,7 @@ const Top = () => {
   const isMobile = useMediaQuery('(max-width: 992px)');
 
   return (
-    <div>
+    <>
       <div className="d-flex justify-cntent-between align-items-center">
         <h4 className="text-disappear d-flex align-items-center">
           <Icon
@@ -30,15 +32,16 @@ const Top = () => {
         </h4>
 
         <ButtonToolbar className="ws-nowrap">
+          <AskFcmBtnModal />
           {isAdmin && <EditRoomBtnDrawer />}
         </ButtonToolbar>
       </div>
 
       <div className="d-flex justify-cntent-between align-items-center">
-        <span>todo</span>
+        {isAdmin && <SendFcmBtnModal />}
         <RoomIfoBtnModal />
       </div>
-    </div>
+    </>
   );
 };
 
